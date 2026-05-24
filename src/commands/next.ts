@@ -17,7 +17,7 @@ function isBlocked(task: Task, tasks: Task[], terminal: string[]): boolean {
 
 export function createNextCommand(config: TaskConfig = DEFAULT_CONFIG): Command {
   const cmd = new Command('next')
-    .description('Show highest-priority actionable task')
+    .description('Pick highest-priority actionable task (skips blocked + terminal)')
     .option('--type <value>', `Filter by type (${valuesHelp(config.fields.type)})`)
     .option(
       '--scope <value>',
@@ -83,5 +83,13 @@ export function createNextCommand(config: TaskConfig = DEFAULT_CONFIG): Command 
         console.log(formatTaskDetail(next, config));
       }
     });
+  cmd.addHelpText(
+    'after',
+    `
+Examples:
+  $ md-task next
+  $ md-task next --type bug
+  $ md-task next -q                         # just the ID, ready to pipe`,
+  );
   return cmd;
 }

@@ -245,3 +245,60 @@ export function serializeConfig(config: TaskConfig): string {
   lines.push('---');
   return lines.join('\n');
 }
+
+function arrayEq(a: string[] | null, b: string[] | null): boolean {
+  if (a === null || b === null) return a === b;
+  if (a.length !== b.length) return false;
+  return a.every((v, i) => v === b[i]);
+}
+
+export function serializeConfigMinimal(config: TaskConfig): string {
+  const d = DEFAULT_CONFIG;
+  const lines: string[] = [];
+
+  const idLines: string[] = [];
+  if (config.id.prefix !== d.id.prefix) idLines.push(`  prefix: ${config.id.prefix}`);
+  if (config.id.separator !== d.id.separator) idLines.push(`  separator: "${config.id.separator}"`);
+  if (idLines.length > 0) {
+    lines.push('id:');
+    lines.push(...idLines);
+  }
+
+  const fieldLines: string[] = [];
+  for (const f of config.fieldOrder) {
+    if (f === 'scope') {
+      if (!arrayEq(config.fields.scope, d.fields.scope)) {
+        fieldLines.push(`  scope: [${(config.fields.scope ?? []).join(', ')}]`);
+      }
+    } else if (!arrayEq(config.fields[f], d.fields[f])) {
+      fieldLines.push(`  ${f}: [${config.fields[f].join(', ')}]`);
+    }
+  }
+  if (!arrayEq(config.fields.terminal, d.fields.terminal)) {
+    fieldLines.push(`  terminal: [${config.fields.terminal.join(', ')}]`);
+  }
+  if (fieldLines.length > 0) {
+    lines.push('fields:');
+    lines.push(...fieldLines);
+  }
+
+  if (config.transitions) {
+    lines.push('transitions:');
+    for (const [from, targets] of Object.entries(config.transitions)) {
+      lines.push(`  ${from}: [${targets.join(', ')}]`);
+    }
+  }
+
+  const defaultLines: string[] = [];
+  if (config.defaults.priority !== d.defaults.priority) defaultLines.push(`  priority: ${config.defaults.priority}`);
+  if (config.defaults.type !== d.defaults.type) defaultLines.push(`  type: ${config.defaults.type}`);
+  if (config.defaults.status !== d.defaults.status) defaultLines.push(`  status: ${config.defaults.status}`);
+  if (config.defaults.scope !== d.defaults.scope) defaultLines.push(`  scope: ${config.defaults.scope}`);
+  if (defaultLines.length > 0) {
+    lines.push('defaults:');
+    lines.push(...defaultLines);
+  }
+
+  if (lines.length === 0) return '';
+  return ['---', ...lines, '---'].join('\n');
+}

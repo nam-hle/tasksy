@@ -5,7 +5,6 @@ import { tmpdir } from 'node:os';
 import { readFileSync } from 'node:fs';
 import { Command } from 'commander';
 import { createUpdateCommand } from '../../../src/commands/update.js';
-import { createMoveCommand } from '../../../src/commands/move.js';
 
 const FIXTURES = join(import.meta.dirname, '../../fixtures');
 
@@ -13,13 +12,6 @@ function buildUpdateProgram() {
   const program = new Command();
   program.exitOverride();
   program.addCommand(createUpdateCommand());
-  return program;
-}
-
-function buildMoveProgram() {
-  const program = new Command();
-  program.exitOverride();
-  program.addCommand(createMoveCommand());
   return program;
 }
 
@@ -79,39 +71,6 @@ describe('status transitions in commands', () => {
     });
   });
 
-  describe('move command', () => {
-    it('rejects move to done from todo (must go through in-progress/review)', async () => {
-      const program = buildMoveProgram();
-      await expect(
-        program.parseAsync(['node', 'test', 'move', 'Task 1', 'done', '--file', file]),
-      ).rejects.toThrow('Cannot transition from "todo" to "done"');
-    });
-
-    it('allows move to done with --force', async () => {
-      const program = buildMoveProgram();
-      await program.parseAsync([
-        'node', 'test', 'move', 'Task 1', 'done', '--file', file, '--force',
-      ]);
-      const content = await readFile(file, 'utf-8');
-      expect(content).toContain('status:done');
-    });
-
-    it('allows move to in-progress from todo', async () => {
-      const program = buildMoveProgram();
-      await program.parseAsync([
-        'node', 'test', 'move', 'Task 1', 'in-progress', '--file', file,
-      ]);
-      const content = await readFile(file, 'utf-8');
-      expect(content).toContain('status:in-progress');
-    });
-
-    it('rejects move from terminal state', async () => {
-      const program = buildMoveProgram();
-      await expect(
-        program.parseAsync(['node', 'test', 'move', 'Task 3', 'todo', '--file', file]),
-      ).rejects.toThrow('Cannot transition from "done" to "todo"');
-    });
-  });
 });
 
 describe('no transitions defined (backward compat)', () => {
@@ -133,8 +92,10 @@ describe('no transitions defined (backward compat)', () => {
   });
 
   it('allows any transition when no transitions configured', async () => {
-    const program = buildMoveProgram();
-    await program.parseAsync(['node', 'test', 'move', 'Task 1', 'done', '--file', file]);
+    const program = buildUpdateProgram();
+    await program.parseAsync([
+      'node', 'test', 'update', 'Task 1', '--file', file, '--status', 'done',
+    ]);
     const content = await readFile(file, 'utf-8');
     expect(content).toContain('status:done');
   });

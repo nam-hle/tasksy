@@ -7,7 +7,7 @@ import {
   formatId,
   parseIdFromHeading,
   isValidField,
-  serializeConfig,
+  serializeConfigMinimal,
 } from './config.js';
 
 const TAG_RE = /^(\w[\w-]*):(.*)/;
@@ -193,7 +193,10 @@ function taskToBlock(task: Task, config: TaskConfig): string {
 export function serializeTaskFile(taskFile: TaskFile): string {
   const parts: string[] = [];
 
-  parts.push(serializeConfig(taskFile.config));
+  const frontmatter = serializeConfigMinimal(taskFile.config);
+  if (frontmatter) {
+    parts.push(frontmatter);
+  }
 
   const trimmedHeader = trimBlankBoundaries(taskFile.header);
   if (trimmedHeader.length > 0) {

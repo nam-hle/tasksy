@@ -29,15 +29,12 @@ src/
     parser.ts           # Frontmatter extraction, markdown ↔ Task[] with config
     id.ts               # Auto-increment ID from existing tasks
   commands/
+    init.ts             # Create empty TASKS.md (no frontmatter by default — convention over config)
     add.ts              # Add new task (--depends-on, --quiet)
-    list.ts             # List/filter tasks (--sort, --status todo,done, --quiet)
-    update.ts           # Update task fields (--note, --depends-on, --force, --quiet)
+    view.ts             # View tasks: list (filter/sort/limit/search) or detail by ID
+    update.ts           # Update task fields (--note, --depends-on, --status w/ transition validation, --force)
     remove.ts           # Remove by ID
-    view.ts             # View single task
-    init.ts             # Create TASKS.md with frontmatter template
-    move.ts             # Transition task status with validation (--force)
     next.ts             # Highest-priority actionable task (skips blocked + terminal)
-    search.ts           # Case-insensitive keyword search
     stats.ts            # Summary counts by status/priority/blocked
     batch.ts            # Bulk ops via JSON stdin (done/start retained as aliases)
   shared/
@@ -46,11 +43,13 @@ src/
     errors.ts           # MdTaskError with exit codes (0=ok, 1=error, 2=not-found)
 ```
 
-**Schema config**: YAML frontmatter in `TASKS.md` defines customizable ID prefix/separator, allowed values for priority/type/status/scope fields, terminal statuses, status transitions, and defaults. Parsed by `config.ts`, passed through `TaskFile.config` to all consumers. When absent, hardcoded defaults apply.
+**Schema config**: Optional YAML frontmatter in `TASKS.md` overrides defaults for ID prefix/separator, field values (priority/type/status/scope), terminal statuses, transitions, and per-field defaults. Parsed by `config.ts`, passed through `TaskFile.config` to all consumers. **Convention over config**: `init` writes no frontmatter; `serializeConfigMinimal` emits only keys diverging from `DEFAULT_CONFIG`, so fully-default configs stay empty on disk.
 
-**Status transitions**: Optional `transitions` map in frontmatter defines allowed status changes (e.g., `todo: [in-progress, cancelled]`). When absent, all transitions allowed. `move` and `update --status` validate against the map. `--force` bypasses validation. Case-insensitive matching preserves schema-defined casing.
+**Status transitions**: Optional `transitions` map in frontmatter defines allowed status changes (e.g., `todo: [in-progress, cancelled]`). When absent, all transitions allowed. `update --status` validates against the map. `--force` bypasses validation. Case-insensitive matching preserves schema-defined casing.
 
-**Data flow**: All commands follow the same pattern — read `TASKS.md` → `parseTaskFile()` (extracts frontmatter → config, then parses task blocks) → mutate `TaskFile` → `serializeTaskFile()` (writes frontmatter + tasks) → write back.
+**Pagination**: `view --limit N` caps output after filter+sort. No default limit. Hidden count surfaced in all output modes (text footer, JSON `hidden` field, stderr line in quiet mode).
+
+**Data flow**: All commands follow the same pattern — read `TASKS.md` → `parseTaskFile()` (extracts frontmatter → config, then parses task blocks) → mutate `TaskFile` → `serializeTaskFile()` (writes minimal frontmatter + tasks) → write back.
 
 **Output modes**: Every command supports `--format text|json` and `-q/--quiet` (minimal machine output — just IDs).
 

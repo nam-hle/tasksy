@@ -1,16 +1,12 @@
 import { Command } from 'commander';
 import { createAddCommand } from './commands/add.js';
-import { createListCommand } from './commands/list.js';
+import { createViewCommand } from './commands/view.js';
 import { createUpdateCommand } from './commands/update.js';
 import { createRemoveCommand } from './commands/remove.js';
-import { createViewCommand } from './commands/view.js';
 import { createInitCommand } from './commands/init.js';
 import { createNextCommand } from './commands/next.js';
-import { createSearchCommand } from './commands/search.js';
 import { createStatsCommand } from './commands/stats.js';
 import { createBatchCommand } from './commands/batch.js';
-import { createMoveCommand } from './commands/move.js';
-import { createFormatCommand } from './commands/format.js';
 import { MdTaskError } from './shared/errors.js';
 import { loadCliConfig } from './shared/cli-config.js';
 
@@ -18,20 +14,44 @@ async function main(): Promise<void> {
   const config = await loadCliConfig();
 
   const program = new Command();
-  program.name('md-task').description('CLI for managing tasks as markdown').version('0.1.0');
+  program
+    .name('md-task')
+    .description(
+      'Manage tasks as markdown (TASKS.md). Token-efficient CLI for AI agents.\n' +
+        'Workflow: init → add → view/next → update (status, notes) → remove.\n' +
+        'IDs are prefixed (default "T-1"). All commands support --file, --format text|json, -q/--quiet.',
+    )
+    .version('0.1.0');
 
+  program.addHelpText(
+    'after',
+    `
+Examples:
+  $ md-task init
+  $ md-task add "Fix login bug" --priority high --type bug
+  $ md-task view --status todo --sort priority
+  $ md-task view T-3                       # detail view
+  $ md-task view --search "login"          # keyword filter
+  $ md-task update T-3 --status in-progress
+  $ md-task update T-3 --note "blocked on auth review"
+  $ md-task next                            # pick highest-priority unblocked
+  $ md-task stats
+  $ echo '[{"action":"add","description":"x"}]' | md-task batch
+
+Tips:
+  Use --format json for structured output, -q for ID-only piping.
+  update --status validates transitions when configured; pass --force to override.`,
+  );
+
+
+  program.addCommand(createInitCommand());
   program.addCommand(createAddCommand(config));
-  program.addCommand(createListCommand(config));
+  program.addCommand(createViewCommand(config));
   program.addCommand(createUpdateCommand(config));
   program.addCommand(createRemoveCommand());
-  program.addCommand(createViewCommand());
-  program.addCommand(createInitCommand());
   program.addCommand(createNextCommand(config));
-  program.addCommand(createSearchCommand());
   program.addCommand(createStatsCommand());
   program.addCommand(createBatchCommand());
-  program.addCommand(createMoveCommand(config));
-  program.addCommand(createFormatCommand());
 
   await program.parseAsync(process.argv);
 }

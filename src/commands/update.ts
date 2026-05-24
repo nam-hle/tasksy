@@ -8,7 +8,7 @@ import { valuesHelp } from '../shared/cli-config.js';
 
 export function createUpdateCommand(config: TaskConfig = DEFAULT_CONFIG): Command {
   const cmd = new Command('update')
-    .description('Update task attributes by ID')
+    .description('Update task fields by ID (status changes validate transitions)')
     .argument('<id>', 'Task ID')
     .option('--description <value>', 'New description')
     .option('--priority <value>', `New priority (${valuesHelp(config.fields.priority)})`)
@@ -38,7 +38,7 @@ export function createUpdateCommand(config: TaskConfig = DEFAULT_CONFIG): Comman
         !opts.note
       ) {
         throw validationError(
-          'No update options provided. Use --description, --priority, --scope, --type, or --status',
+          'No update options provided. Use one of: --description, --priority, --type, --status, --scope, --depends-on, --note',
         );
       }
 
@@ -134,5 +134,17 @@ export function createUpdateCommand(config: TaskConfig = DEFAULT_CONFIG): Comman
         console.log(`Updated task ${fid}: ${task.description}`);
       }
     });
+  cmd.addHelpText(
+    'after',
+    `
+Examples:
+  $ md-task update T-3 --status in-progress
+  $ md-task update T-3 --status done --force      # bypass transition rules
+  $ md-task update T-3 --priority high --type bug
+  $ md-task update T-3 --note "blocked on review"
+  $ md-task update T-3 --depends-on T-1,T-2
+  $ md-task update T-3 --depends-on ""             # clear dependencies
+  $ md-task update T-3 --description "new text"`,
+  );
   return cmd;
 }
