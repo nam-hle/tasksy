@@ -1,6 +1,6 @@
 {
   "name": "md-task",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI for managing tasks as markdown, optimized for AI agent token usage",
   "type": "module",
   "bin": {
