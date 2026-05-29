@@ -7,7 +7,7 @@ import { createInitCommand } from './commands/init.js';
 import { createNextCommand } from './commands/next.js';
 import { createStatsCommand } from './commands/stats.js';
 import { createBatchCommand } from './commands/batch.js';
-import { TaskdownError } from './shared/errors.js';
+import { TasksyError } from './shared/errors.js';
 import { loadCliConfig } from './shared/cli-config.js';
 
 async function main(): Promise<void> {
@@ -56,7 +56,7 @@ Tips:
 }
 
 main().catch((err: unknown) => {
-  if (err instanceof TaskdownError) {
+  if (err instanceof TasksyError) {
     console.error(err.message);
     process.exitCode = err.exitCode;
   } else {
