@@ -1,4 +1,4 @@
-# md-task
+# tasksy
 
 CLI for managing tasks as markdown files, optimized for AI agent token usage.
 
@@ -19,31 +19,31 @@ pnpm link --global
 
 ```bash
 # Initialize
-md-task init
+tasksy init
 
 # Add tasks
-md-task add "Fix login timeout" --priority high --type bug --scope backend
-md-task add "Add caching layer" --type feature
-md-task add "Write tests for auth" --depends-on T-1
+tasksy add "Fix login timeout" --priority high --type bug --scope backend
+tasksy add "Add caching layer" --type feature
+tasksy add "Write tests for auth" --depends-on T-1
 
 # Work
-md-task next                              # highest-priority actionable
-md-task update T-1 --status in-progress   # transition (validates if transitions configured)
-md-task update T-1 --status done
+tasksy next                              # highest-priority actionable
+tasksy update T-1 --status in-progress   # transition (validates if transitions configured)
+tasksy update T-1 --status done
 
 # View
-md-task view                              # all tasks
-md-task view T-1                          # detail for one task
-md-task view --status todo,in-progress --sort priority
-md-task view --search "login"
-md-task view --limit 10                   # cap output, reports hidden count
+tasksy view                              # all tasks
+tasksy view T-1                          # detail for one task
+tasksy view --status todo,in-progress --sort priority
+tasksy view --search "login"
+tasksy view --limit 10                   # cap output, reports hidden count
 
 # Update
-md-task update T-2 --priority critical
-md-task update T-2 --note "tried redis, too complex"
+tasksy update T-2 --priority critical
+tasksy update T-2 --note "tried redis, too complex"
 
 # Summary
-md-task stats
+tasksy stats
 ```
 
 ## Commands
@@ -52,16 +52,16 @@ Eight verbs total:
 
 | Command                     | Description                                          |
 | --------------------------- | ---------------------------------------------------- |
-| `md-task init`              | Create empty `TASKS.md`                              |
-| `md-task add <description>` | Add a new task                                       |
-| `md-task view [id]`         | List tasks (filter/sort/limit) or detail for one ID  |
-| `md-task update <id>`       | Update fields (status changes validate transitions)  |
-| `md-task remove <id>`       | Remove a task                                        |
-| `md-task next`              | Highest-priority actionable task (skips blocked)     |
-| `md-task stats`             | Summary counts by status/priority/blocked            |
-| `md-task batch`             | Bulk operations from JSON stdin                      |
+| `tasksy init`              | Create empty `TASKS.md`                              |
+| `tasksy add <description>` | Add a new task                                       |
+| `tasksy view [id]`         | List tasks (filter/sort/limit) or detail for one ID  |
+| `tasksy update <id>`       | Update fields (status changes validate transitions)  |
+| `tasksy remove <id>`       | Remove a task                                        |
+| `tasksy next`              | Highest-priority actionable task (skips blocked)     |
+| `tasksy stats`             | Summary counts by status/priority/blocked            |
+| `tasksy batch`             | Bulk operations from JSON stdin                      |
 
-Run `md-task <cmd> --help` for arguments, options, and examples.
+Run `tasksy <cmd> --help` for arguments, options, and examples.
 
 ## File Format
 
@@ -155,39 +155,39 @@ defaults:
   scope: backend
 ```
 
-Applied when a field is omitted in `md-task add`.
+Applied when a field is omitted in `tasksy add`.
 
 ## AI Agent Integration
 
 ### Output modes
 
 ```bash
-md-task view                         # human-readable text (default)
-md-task view --format json           # structured JSON
-md-task view --quiet                 # minimal: IDs only, one per line
+tasksy view                         # human-readable text (default)
+tasksy view --format json           # structured JSON
+tasksy view --quiet                 # minimal: IDs only, one per line
 ```
 
 ### Quiet mode (`-q`)
 
 ```bash
-md-task add "Fix bug" -q             # → "T-1"
-md-task next -q                      # → "T-3"
-md-task view --status todo -q        # → "T-1\nT-3\nT-5"
+tasksy add "Fix bug" -q             # → "T-1"
+tasksy next -q                      # → "T-3"
+tasksy view --status todo -q        # → "T-1\nT-3\nT-5"
 ```
 
 ### JSON mode
 
 ```bash
-md-task view --format json
+tasksy view --format json
 # → {"tasks":[...],"count":5,"total":5,"hidden":0}
 
-md-task view --limit 2 --format json
+tasksy view --limit 2 --format json
 # → {"tasks":[...],"count":2,"total":5,"hidden":3}
 
-md-task next --format json
+tasksy next --format json
 # → {"task":{"id":"T-1","description":"...","priority":"high",...}}
 
-md-task stats --format json
+tasksy stats --format json
 # → {"total":5,"byStatus":{...},"byPriority":{...},"blocked":1}
 ```
 
@@ -207,14 +207,14 @@ echo '[
   {"action":"update","id":3,"status":"done"},
   {"action":"update","id":2,"status":"in-progress","note":"started work"},
   {"action":"remove","id":5}
-]' | md-task batch
+]' | tasksy batch
 ```
 
 Reports per-action success/failure. Supported actions: `add`, `update`, `remove`, `done`, `start` (`done`/`start` retained as aliases for status transitions).
 
 ### Smart task selection
 
-`md-task next` returns highest-priority actionable task:
+`tasksy next` returns highest-priority actionable task:
 
 - Prefers `in-progress` over `todo`.
 - Sorts by priority (first value in `fields.priority` = highest).
@@ -225,9 +225,9 @@ Reports per-action success/failure. Supported actions: `add`, `update`, `remove`
 ### Dependencies
 
 ```bash
-md-task add "Deploy to prod" --depends-on T-1,T-2
-md-task next                          # skips this task until T-1 and T-2 are terminal
-md-task stats                         # reports blocked count
+tasksy add "Deploy to prod" --depends-on T-1,T-2
+tasksy next                          # skips this task until T-1 and T-2 are terminal
+tasksy stats                         # reports blocked count
 ```
 
 ### Exit codes
@@ -243,16 +243,16 @@ md-task stats                         # reports blocked count
 Multi-value CSV filters:
 
 ```bash
-md-task view --status todo,in-progress
-md-task view --priority critical,high --scope backend
-md-task view --type bug,feature --sort priority
+tasksy view --status todo,in-progress
+tasksy view --priority critical,high --scope backend
+tasksy view --type bug,feature --sort priority
 ```
 
 ### Notes
 
 ```bash
-md-task update T-3 --note "tried approach X, failed due to Y"
-md-task update T-3 --note "switching to approach Z"
+tasksy update T-3 --note "tried approach X, failed due to Y"
+tasksy update T-3 --note "switching to approach Z"
 ```
 
 Persist as `> ` prefixed lines in the markdown.

@@ -135,11 +135,11 @@ export function createViewCommand(config: TaskConfig = DEFAULT_CONFIG): Command 
     'after',
     `
 Examples:
-  $ md-task view                            # all tasks
-  $ md-task view T-3                        # detail for one task
-  $ md-task view --status todo,in-progress  # multi-value filter (CSV)
-  $ md-task view --search "auth"            # keyword match in description + notes
-  $ md-task view --sort priority --format json`,
+  $ tasksy view                            # all tasks
+  $ tasksy view T-3                        # detail for one task
+  $ tasksy view --status todo,in-progress  # multi-value filter (CSV)
+  $ tasksy view --search "auth"            # keyword match in description + notes
+  $ tasksy view --sort priority --format json`,
   );
   return cmd;
 }

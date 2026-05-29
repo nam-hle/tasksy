@@ -87,9 +87,9 @@ export function createNextCommand(config: TaskConfig = DEFAULT_CONFIG): Command 
     'after',
     `
 Examples:
-  $ md-task next
-  $ md-task next --type bug
-  $ md-task next -q                         # just the ID, ready to pipe`,
+  $ tasksy next
+  $ tasksy next --type bug
+  $ tasksy next -q                         # just the ID, ready to pipe`,
   );
   return cmd;
 }

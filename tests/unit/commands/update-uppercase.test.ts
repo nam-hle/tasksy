@@ -20,7 +20,7 @@ describe('update command with uppercase schema', () => {
   let file: string;
 
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'md-task-test-'));
+    dir = await mkdtemp(join(tmpdir(), 'tasksy-test-'));
     file = join(dir, 'TASKS.md');
     const fixture = readFileSync(join(FIXTURES, 'uppercase-schema.md'), 'utf-8');
     await writeFile(file, fixture, 'utf-8');

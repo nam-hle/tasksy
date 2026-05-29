@@ -138,13 +138,13 @@ export function createUpdateCommand(config: TaskConfig = DEFAULT_CONFIG): Comman
     'after',
     `
 Examples:
-  $ md-task update T-3 --status in-progress
-  $ md-task update T-3 --status done --force      # bypass transition rules
-  $ md-task update T-3 --priority high --type bug
-  $ md-task update T-3 --note "blocked on review"
-  $ md-task update T-3 --depends-on T-1,T-2
-  $ md-task update T-3 --depends-on ""             # clear dependencies
-  $ md-task update T-3 --description "new text"`,
+  $ tasksy update T-3 --status in-progress
+  $ tasksy update T-3 --status done --force      # bypass transition rules
+  $ tasksy update T-3 --priority high --type bug
+  $ tasksy update T-3 --note "blocked on review"
+  $ tasksy update T-3 --depends-on T-1,T-2
+  $ tasksy update T-3 --depends-on ""             # clear dependencies
+  $ tasksy update T-3 --description "new text"`,
   );
   return cmd;
 }

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-md-task — CLI for managing tasks as markdown files, optimized for AI agent token usage. Tasks stored in `TASKS.md` (default) as markdown with YAML frontmatter (schema config) + `### {prefix}{sep}{id}` headings and comma-separated tag lines.
+tasksy — CLI for managing tasks as markdown files, optimized for AI agent token usage. Tasks stored in `TASKS.md` (default) as markdown with YAML frontmatter (schema config) + `### {prefix}{sep}{id}` headings and comma-separated tag lines.
 
 ## Commands
 

@@ -1,17 +1,17 @@
 ---
-name: md-task
-description: "Manage tasks as markdown files using the md-task CLI. Use when the user wants to track tasks, create task lists, manage project work items, check task status, or plan work in a TASKS.md file. Covers adding, viewing, updating, removing, next-task selection, stats, and batch operations on markdown-based tasks with optional YAML frontmatter schema."
+name: tasksy
+description: "Manage tasks as markdown files using the tasksy CLI. Use when the user wants to track tasks, create task lists, manage project work items, check task status, or plan work in a TASKS.md file. Covers adding, viewing, updating, removing, next-task selection, stats, and batch operations on markdown-based tasks with optional YAML frontmatter schema."
 argument-hint: "[init|add|view|update|remove|next|stats|batch]"
-allowed-tools: Bash(md-task *), Read, Grep, Glob
+allowed-tools: Bash(tasksy *), Read, Grep, Glob
 ---
 
-# md-task — Markdown Task Management
+# tasksy — Markdown Task Management
 
 CLI for managing tasks as markdown files, optimized for AI agent token usage.
 
 Tasks stored in `TASKS.md` (default) as markdown with optional YAML frontmatter (schema config) + `### {prefix}{sep}{id}` headings and comma-separated tag lines.
 
-**Convention over config**: `md-task init` writes minimal `# Tasks\n` only. Schema defaults apply silently. Add frontmatter only to override (id prefix, custom field values, transitions, etc.).
+**Convention over config**: `tasksy init` writes minimal `# Tasks\n` only. Schema defaults apply silently. Add frontmatter only to override (id prefix, custom field values, transitions, etc.).
 
 **ID format**: Commands taking an ID require prefixed form (e.g. `T-130`, not `130`). Default prefix `T`, separator `-`. Configurable via frontmatter. `--depends-on` lists also require prefixed IDs (`T-3,T-5`).
 
@@ -22,31 +22,31 @@ Tasks stored in `TASKS.md` (default) as markdown with optional YAML frontmatter 
 ## Commands (8 total)
 
 ```bash
-md-task init                           # Create empty TASKS.md (no frontmatter by default)
-md-task add "description"              # Add task (auto-increments ID)
-md-task add "desc" --priority high     # With priority
-md-task add "desc" --depends-on T-3,T-5  # With dependencies (prefixed IDs required)
+tasksy init                           # Create empty TASKS.md (no frontmatter by default)
+tasksy add "description"              # Add task (auto-increments ID)
+tasksy add "desc" --priority high     # With priority
+tasksy add "desc" --depends-on T-3,T-5  # With dependencies (prefixed IDs required)
 
-md-task view                           # List all tasks
-md-task view T-1                       # Detail for one task (positional ID)
-md-task view --status todo,in-progress # Multi-value CSV filter
-md-task view --search "login"          # Keyword in description + notes
-md-task view --sort priority           # Sort: priority/created/updated/status/id
-md-task view --limit 10                # Cap output; reports hidden count
+tasksy view                           # List all tasks
+tasksy view T-1                       # Detail for one task (positional ID)
+tasksy view --status todo,in-progress # Multi-value CSV filter
+tasksy view --search "login"          # Keyword in description + notes
+tasksy view --sort priority           # Sort: priority/created/updated/status/id
+tasksy view --limit 10                # Cap output; reports hidden count
 
-md-task update T-1 --priority high     # Update fields
-md-task update T-1 --status done       # Transition status (validates if configured)
-md-task update T-1 --status done --force  # Bypass transition validation
-md-task update T-1 --note "blocked"    # Append a note
-md-task update T-1 --depends-on T-2,T-3  # Set dependencies
-md-task update T-1 --depends-on ""     # Clear dependencies
-md-task update T-1 --description "new"
+tasksy update T-1 --priority high     # Update fields
+tasksy update T-1 --status done       # Transition status (validates if configured)
+tasksy update T-1 --status done --force  # Bypass transition validation
+tasksy update T-1 --note "blocked"    # Append a note
+tasksy update T-1 --depends-on T-2,T-3  # Set dependencies
+tasksy update T-1 --depends-on ""     # Clear dependencies
+tasksy update T-1 --description "new"
 
-md-task remove T-1                     # Delete task
-md-task next                           # Highest-priority actionable (skips blocked + terminal)
-md-task next --type bug                # Filter
-md-task stats                          # Counts by status/priority/blocked
-md-task batch                          # Bulk ops via JSON stdin (see below)
+tasksy remove T-1                     # Delete task
+tasksy next                           # Highest-priority actionable (skips blocked + terminal)
+tasksy next --type bug                # Filter
+tasksy stats                          # Counts by status/priority/blocked
+tasksy batch                          # Bulk ops via JSON stdin (see below)
 ```
 
 ## Common Options
@@ -77,7 +77,7 @@ echo '[
   {"action":"update","id":3,"status":"done"},
   {"action":"update","id":2,"note":"started"},
   {"action":"remove","id":5}
-]' | md-task batch
+]' | tasksy batch
 ```
 
 ## Task Fields
@@ -130,10 +130,10 @@ Empty/absent frontmatter = full defaults.
 
 ## Workflow Tips for Agents
 
-- `md-task next -q` → just the next task ID, ready to pipe.
-- `md-task view --limit N` → bounded output for large backlogs; always check `hidden` count.
-- `md-task view --search "kw" --format json` → structured keyword search.
-- `md-task stats --format json` → project state at a glance.
-- `md-task batch` → bulk mutations in one invocation (token-efficient).
+- `tasksy next -q` → just the next task ID, ready to pipe.
+- `tasksy view --limit N` → bounded output for large backlogs; always check `hidden` count.
+- `tasksy view --search "kw" --format json` → structured keyword search.
+- `tasksy stats --format json` → project state at a glance.
+- `tasksy batch` → bulk mutations in one invocation (token-efficient).
 - Use `--quiet` for scripting; `--format json` for structured consumption.
 - Exit codes: `0` ok, `1` error, `2` not-found.

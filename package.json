@@ -1,10 +1,10 @@
 {
-  "name": "md-task",
+  "name": "tasksy",
   "version": "0.1.0",
   "description": "CLI for managing tasks as markdown, optimized for AI agent token usage",
   "type": "module",
   "bin": {
-    "md-task": "./dist/index.js"
+    "tasksy": "./dist/index.js"
   },
   "scripts": {
     "build": "tsup",

@@ -20,7 +20,7 @@ describe('status transitions in commands', () => {
   let file: string;
 
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'md-task-test-'));
+    dir = await mkdtemp(join(tmpdir(), 'tasksy-test-'));
     file = join(dir, 'TASKS.md');
     const fixture = readFileSync(join(FIXTURES, 'transitions.md'), 'utf-8');
     await writeFile(file, fixture, 'utf-8');
@@ -78,7 +78,7 @@ describe('no transitions defined (backward compat)', () => {
   let file: string;
 
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'md-task-test-'));
+    dir = await mkdtemp(join(tmpdir(), 'tasksy-test-'));
     file = join(dir, 'TASKS.md');
     const fixture = readFileSync(join(FIXTURES, 'valid.md'), 'utf-8');
     await writeFile(file, fixture, 'utf-8');

@@ -7,7 +7,7 @@ import { createInitCommand } from './commands/init.js';
 import { createNextCommand } from './commands/next.js';
 import { createStatsCommand } from './commands/stats.js';
 import { createBatchCommand } from './commands/batch.js';
-import { MdTaskError } from './shared/errors.js';
+import { TaskdownError } from './shared/errors.js';
 import { loadCliConfig } from './shared/cli-config.js';
 
 async function main(): Promise<void> {
@@ -15,7 +15,7 @@ async function main(): Promise<void> {
 
   const program = new Command();
   program
-    .name('md-task')
+    .name('tasksy')
     .description(
       'Manage tasks as markdown (TASKS.md). Token-efficient CLI for AI agents.\n' +
         'Workflow: init → add → view/next → update (status, notes) → remove.\n' +
@@ -27,16 +27,16 @@ async function main(): Promise<void> {
     'after',
     `
 Examples:
-  $ md-task init
-  $ md-task add "Fix login bug" --priority high --type bug
-  $ md-task view --status todo --sort priority
-  $ md-task view T-3                       # detail view
-  $ md-task view --search "login"          # keyword filter
-  $ md-task update T-3 --status in-progress
-  $ md-task update T-3 --note "blocked on auth review"
-  $ md-task next                            # pick highest-priority unblocked
-  $ md-task stats
-  $ echo '[{"action":"add","description":"x"}]' | md-task batch
+  $ tasksy init
+  $ tasksy add "Fix login bug" --priority high --type bug
+  $ tasksy view --status todo --sort priority
+  $ tasksy view T-3                       # detail view
+  $ tasksy view --search "login"          # keyword filter
+  $ tasksy update T-3 --status in-progress
+  $ tasksy update T-3 --note "blocked on auth review"
+  $ tasksy next                            # pick highest-priority unblocked
+  $ tasksy stats
+  $ echo '[{"action":"add","description":"x"}]' | tasksy batch
 
 Tips:
   Use --format json for structured output, -q for ID-only piping.
@@ -57,7 +57,7 @@ Tips:
 }
 
 main().catch((err: unknown) => {
-  if (err instanceof MdTaskError) {
+  if (err instanceof TaskdownError) {
     console.error(err.message);
     process.exitCode = err.exitCode;
   } else {

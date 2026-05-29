@@ -102,10 +102,10 @@ export function createAddCommand(config: TaskConfig = DEFAULT_CONFIG): Command {
     'after',
     `
 Examples:
-  $ md-task add "Fix login bug"
-  $ md-task add "Add caching" --priority high --type feature
-  $ md-task add "Wire auth" --depends-on T-3,T-5
-  $ md-task add "x" -q                      # outputs just the new ID`,
+  $ tasksy add "Fix login bug"
+  $ tasksy add "Add caching" --priority high --type feature
+  $ tasksy add "Wire auth" --depends-on T-3,T-5
+  $ tasksy add "x" -q                      # outputs just the new ID`,
   );
   return cmd;
 }
