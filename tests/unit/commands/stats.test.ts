@@ -53,4 +53,38 @@ describe('stats command', () => {
     expect(output).toContain('Total: 3');
     expect(output).toContain('todo: 1');
   });
+
+  it('--by type groups by type field', async () => {
+    const program = buildProgram();
+    await program.parseAsync([
+      'node',
+      'test',
+      'stats',
+      '--file',
+      file,
+      '--by',
+      'type',
+      '--format',
+      'json',
+    ]);
+    const output: string = (console.log as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
+    const parsed = JSON.parse(output);
+    expect(parsed.by).toBe('type');
+    expect(parsed.total).toBe(3);
+    expect(parsed.counts).toBeDefined();
+  });
+
+  it('--by text mode shows grouped header', async () => {
+    const program = buildProgram();
+    await program.parseAsync(['node', 'test', 'stats', '--file', file, '--by', 'priority']);
+    const output: string = (console.log as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
+    expect(output).toContain('by priority');
+  });
+
+  it('rejects invalid --by field', async () => {
+    const program = buildProgram();
+    await expect(
+      program.parseAsync(['node', 'test', 'stats', '--file', file, '--by', 'bogus']),
+    ).rejects.toThrow('Invalid --by field');
+  });
 });
