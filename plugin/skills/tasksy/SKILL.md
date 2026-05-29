@@ -1,7 +1,7 @@
 ---
 name: tasksy
-description: "Manage tasks as markdown files using the tasksy CLI. Use when the user wants to track tasks, create task lists, manage project work items, check task status, or plan work in a TASKS.md file. Covers adding, viewing, updating, removing, next-task selection, stats, and batch operations on markdown-based tasks with optional YAML frontmatter schema."
-argument-hint: "[init|add|view|update|remove|next|stats|batch]"
+description: 'Manage tasks as markdown files using the tasksy CLI. Use when the user wants to track tasks, create task lists, manage project work items, check task status, or plan work in a TASKS.md file. Covers adding, viewing, updating, removing, next-task selection, stats, and batch operations on markdown-based tasks with optional YAML frontmatter schema.'
+argument-hint: '[init|add|view|update|remove|next|stats|batch]'
 allowed-tools: Bash(tasksy *), Read, Grep, Glob
 ---
 
@@ -52,6 +52,7 @@ tasksy batch                          # Bulk ops via JSON stdin (see below)
 ## Common Options
 
 All commands accept:
+
 - `--file <path>` — task file path (default: `TASKS.md`)
 - `--format text|json` — output format
 - `-q, --quiet` — minimal output (just IDs)
@@ -61,6 +62,7 @@ All commands accept:
 ## Pagination (`view --limit`)
 
 No default limit. Pass `--limit N` to cap output. Hidden count always surfaced:
+
 - Text: footer `... 23 more not shown (--limit 10); raise --limit or refine filters.`
 - JSON: `{ count, total, hidden }` fields.
 - Quiet: hidden count goes to **stderr** so piped IDs stay clean.
@@ -114,7 +116,7 @@ Frontmatter is **opt-in**. Only override what diverges from defaults:
 ```yaml
 ---
 id:
-  prefix: BUG          # default: T
+  prefix: BUG # default: T
 fields:
   priority: [p0, p1, p2, p3]
   status: [backlog, todo, in-progress, review, done, cancelled]

@@ -43,7 +43,6 @@ Tips:
   update --status validates transitions when configured; pass --force to override.`,
   );
 
-
   program.addCommand(createInitCommand());
   program.addCommand(createAddCommand(config));
   program.addCommand(createViewCommand(config));

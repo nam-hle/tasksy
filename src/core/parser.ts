@@ -217,7 +217,7 @@ export function serializeTaskFile(taskFile: TaskFile): string {
 function trimBlankBoundaries(lines: string[]): string[] {
   let start = 0;
   let end = lines.length;
-  while (start < end && lines[start]!.trim() === '') start++;
-  while (end > start && lines[end - 1]!.trim() === '') end--;
+  while (start < end && (lines[start] ?? '').trim() === '') start++;
+  while (end > start && (lines[end - 1] ?? '').trim() === '') end--;
   return lines.slice(start, end);
 }

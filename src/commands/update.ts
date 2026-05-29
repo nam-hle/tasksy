@@ -3,7 +3,16 @@ import { parseTaskFile, serializeTaskFile } from '../core/parser.js';
 import { readTasksFile, writeTasksFile, fileExists } from '../shared/file.js';
 import { formatJson, taskWithFormattedId } from '../shared/output.js';
 import { taskNotFound, fileNotFound, validationError } from '../shared/errors.js';
-import { isValidField, normalizeField, isValidTransition, parseId, parseIdList, formatId, type TaskConfig, DEFAULT_CONFIG } from '../core/config.js';
+import {
+  isValidField,
+  normalizeField,
+  isValidTransition,
+  parseId,
+  parseIdList,
+  formatId,
+  type TaskConfig,
+  DEFAULT_CONFIG,
+} from '../core/config.js';
 import { valuesHelp } from '../shared/cli-config.js';
 
 export function createUpdateCommand(config: TaskConfig = DEFAULT_CONFIG): Command {

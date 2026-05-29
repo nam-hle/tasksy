@@ -37,7 +37,14 @@ describe('status transitions in commands', () => {
     it('allows valid transition: todo → in-progress', async () => {
       const program = buildUpdateProgram();
       await program.parseAsync([
-        'node', 'test', 'update', 'Task 1', '--file', file, '--status', 'in-progress',
+        'node',
+        'test',
+        'update',
+        'Task 1',
+        '--file',
+        file,
+        '--status',
+        'in-progress',
       ]);
       const content = await readFile(file, 'utf-8');
       expect(content).toContain('status:in-progress');
@@ -47,7 +54,14 @@ describe('status transitions in commands', () => {
       const program = buildUpdateProgram();
       await expect(
         program.parseAsync([
-          'node', 'test', 'update', 'Task 1', '--file', file, '--status', 'done',
+          'node',
+          'test',
+          'update',
+          'Task 1',
+          '--file',
+          file,
+          '--status',
+          'done',
         ]),
       ).rejects.toThrow('Cannot transition from "todo" to "done"');
     });
@@ -56,7 +70,14 @@ describe('status transitions in commands', () => {
       const program = buildUpdateProgram();
       await expect(
         program.parseAsync([
-          'node', 'test', 'update', 'Task 3', '--file', file, '--status', 'todo',
+          'node',
+          'test',
+          'update',
+          'Task 3',
+          '--file',
+          file,
+          '--status',
+          'todo',
         ]),
       ).rejects.toThrow('Cannot transition from "done" to "todo"');
     });
@@ -64,13 +85,20 @@ describe('status transitions in commands', () => {
     it('allows invalid transition with --force', async () => {
       const program = buildUpdateProgram();
       await program.parseAsync([
-        'node', 'test', 'update', 'Task 1', '--file', file, '--status', 'done', '--force',
+        'node',
+        'test',
+        'update',
+        'Task 1',
+        '--file',
+        file,
+        '--status',
+        'done',
+        '--force',
       ]);
       const content = await readFile(file, 'utf-8');
       expect(content).toContain('status:done');
     });
   });
-
 });
 
 describe('no transitions defined (backward compat)', () => {
@@ -94,7 +122,14 @@ describe('no transitions defined (backward compat)', () => {
   it('allows any transition when no transitions configured', async () => {
     const program = buildUpdateProgram();
     await program.parseAsync([
-      'node', 'test', 'update', 'Task 1', '--file', file, '--status', 'done',
+      'node',
+      'test',
+      'update',
+      'Task 1',
+      '--file',
+      file,
+      '--status',
+      'done',
     ]);
     const content = await readFile(file, 'utf-8');
     expect(content).toContain('status:done');

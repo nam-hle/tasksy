@@ -1,5 +1,9 @@
 # tasksy
 
+[![npm version](https://img.shields.io/npm/v/tasksy.svg)](https://www.npmjs.com/package/tasksy)
+[![CI](https://github.com/nam-hle/tasksy/actions/workflows/ci.yml/badge.svg)](https://github.com/nam-hle/tasksy/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 CLI for managing tasks as markdown files, optimized for AI agent token usage.
 
 Tasks live in a plain `TASKS.md` file that's human-readable and version-control friendly. Every command supports `--format json` and `--quiet` modes so AI agents can parse output without wasting tokens.
@@ -8,10 +12,16 @@ Tasks live in a plain `TASKS.md` file that's human-readable and version-control 
 
 ```bash
 # Requires Node.js >= 22
+npm i -g tasksy
+# or
+pnpm add -g tasksy
+```
+
+### From source
+
+```bash
 pnpm install
 pnpm build
-
-# Link globally (optional)
 pnpm link --global
 ```
 
@@ -50,16 +60,16 @@ tasksy stats
 
 Eight verbs total:
 
-| Command                     | Description                                          |
-| --------------------------- | ---------------------------------------------------- |
-| `tasksy init`              | Create empty `TASKS.md`                              |
-| `tasksy add <description>` | Add a new task                                       |
-| `tasksy view [id]`         | List tasks (filter/sort/limit) or detail for one ID  |
-| `tasksy update <id>`       | Update fields (status changes validate transitions)  |
-| `tasksy remove <id>`       | Remove a task                                        |
-| `tasksy next`              | Highest-priority actionable task (skips blocked)     |
-| `tasksy stats`             | Summary counts by status/priority/blocked            |
-| `tasksy batch`             | Bulk operations from JSON stdin                      |
+| Command                    | Description                                         |
+| -------------------------- | --------------------------------------------------- |
+| `tasksy init`              | Create empty `TASKS.md`                             |
+| `tasksy add <description>` | Add a new task                                      |
+| `tasksy view [id]`         | List tasks (filter/sort/limit) or detail for one ID |
+| `tasksy update <id>`       | Update fields (status changes validate transitions) |
+| `tasksy remove <id>`       | Remove a task                                       |
+| `tasksy next`              | Highest-priority actionable task (skips blocked)    |
+| `tasksy stats`             | Summary counts by status/priority/blocked           |
+| `tasksy batch`             | Bulk operations from JSON stdin                     |
 
 Run `tasksy <cmd> --help` for arguments, options, and examples.
 
@@ -108,8 +118,8 @@ Frontmatter is **opt-in** — only override what you need. Anything omitted fall
 
 ```yaml
 id:
-  prefix: BUG       # default: T
-  separator: '-'    # default: -
+  prefix: BUG # default: T
+  separator: '-' # default: -
 ```
 
 Produces headings like `### BUG-1`.
@@ -232,11 +242,11 @@ tasksy stats                         # reports blocked count
 
 ### Exit codes
 
-| Code | Meaning                                                  |
-| ---- | -------------------------------------------------------- |
-| `0`  | Success                                                  |
-| `1`  | Error (validation, parse error)                          |
-| `2`  | Not found (task/file not found, no results from `next`)  |
+| Code | Meaning                                                 |
+| ---- | ------------------------------------------------------- |
+| `0`  | Success                                                 |
+| `1`  | Error (validation, parse error)                         |
+| `2`  | Not found (task/file not found, no results from `next`) |
 
 ### Filters
 

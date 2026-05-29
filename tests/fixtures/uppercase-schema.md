@@ -17,9 +17,11 @@ defaults:
 # Tasks
 
 ### TASK-1
+
 type:Bug, priority:P1, scope:backend, status:Todo, created:2026-04-23, updated:2026-04-23
 Fix login timeout
 
 ### TASK-2
+
 type:Feature, priority:P2, scope:general, status:In-Progress, created:2026-04-23, updated:2026-04-23
 Add caching layer

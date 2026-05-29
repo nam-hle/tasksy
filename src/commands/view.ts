@@ -2,7 +2,12 @@ import { Command } from 'commander';
 import { parseTaskFile } from '../core/parser.js';
 import type { Task } from '../core/task.js';
 import { readTasksFile, fileExists } from '../shared/file.js';
-import { formatJson, formatTaskList, formatTaskDetail, taskWithFormattedId } from '../shared/output.js';
+import {
+  formatJson,
+  formatTaskList,
+  formatTaskDetail,
+  taskWithFormattedId,
+} from '../shared/output.js';
 import { fileNotFound, taskNotFound, validationError } from '../shared/errors.js';
 import { formatId, parseId, type TaskConfig, DEFAULT_CONFIG } from '../core/config.js';
 import { valuesHelp } from '../shared/cli-config.js';
@@ -108,7 +113,9 @@ export function createViewCommand(config: TaskConfig = DEFAULT_CONFIG): Command 
       if (opts.limit !== undefined) {
         const parsed = parseInt(opts.limit as string, 10);
         if (isNaN(parsed) || parsed < 0) {
-          throw validationError(`Invalid --limit: "${opts.limit as string}". Must be a non-negative integer.`);
+          throw validationError(
+            `Invalid --limit: "${opts.limit as string}". Must be a non-negative integer.`,
+          );
         }
         limit = parsed;
         tasks = tasks.slice(0, parsed);
@@ -119,7 +126,9 @@ export function createViewCommand(config: TaskConfig = DEFAULT_CONFIG): Command 
       if (opts.quiet) {
         console.log(tasks.map((t) => formatId(t.id, config)).join('\n'));
         if (hidden > 0) {
-          console.error(`${hidden} more not shown (--limit ${limit ?? 0}); raise --limit or refine filters.`);
+          console.error(
+            `${hidden} more not shown (--limit ${limit ?? 0}); raise --limit or refine filters.`,
+          );
         }
       } else if (format === 'json') {
         const out = tasks.map((t) => taskWithFormattedId(t, config));
@@ -127,7 +136,9 @@ export function createViewCommand(config: TaskConfig = DEFAULT_CONFIG): Command 
       } else {
         console.log(formatTaskList(tasks, config));
         if (hidden > 0) {
-          console.log(`\n... ${hidden} more not shown (--limit ${limit ?? 0}); raise --limit or refine filters.`);
+          console.log(
+            `\n... ${hidden} more not shown (--limit ${limit ?? 0}); raise --limit or refine filters.`,
+          );
         }
       }
     });

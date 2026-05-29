@@ -45,7 +45,16 @@ describe('remove command', () => {
 
   it('outputs JSON when --format json', async () => {
     const program = buildProgram();
-    await program.parseAsync(['node', 'test', 'remove', 'Task 1', '--file', file, '--format', 'json']);
+    await program.parseAsync([
+      'node',
+      'test',
+      'remove',
+      'Task 1',
+      '--file',
+      file,
+      '--format',
+      'json',
+    ]);
 
     const output: string = (console.log as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
     const parsed = JSON.parse(output);

@@ -123,7 +123,16 @@ describe('list command', () => {
 
   it('shows detail when ID positional given', async () => {
     const program = buildProgram();
-    await program.parseAsync(['node', 'test', 'view', 'Task 1', '--file', file, '--format', 'json']);
+    await program.parseAsync([
+      'node',
+      'test',
+      'view',
+      'Task 1',
+      '--file',
+      file,
+      '--format',
+      'json',
+    ]);
     const output: string = (console.log as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
     const parsed = JSON.parse(output);
     expect(parsed.task).toBeDefined();
@@ -147,7 +156,15 @@ describe('list command', () => {
   it('--limit caps output and reports hidden count (json)', async () => {
     const program = buildProgram();
     await program.parseAsync([
-      'node', 'test', 'view', '--file', file, '--limit', '1', '--format', 'json',
+      'node',
+      'test',
+      'view',
+      '--file',
+      file,
+      '--limit',
+      '1',
+      '--format',
+      'json',
     ]);
     const output: string = (console.log as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
     const parsed = JSON.parse(output);
@@ -167,7 +184,15 @@ describe('list command', () => {
   it('--limit 0 hides all and reports total as hidden', async () => {
     const program = buildProgram();
     await program.parseAsync([
-      'node', 'test', 'view', '--file', file, '--limit', '0', '--format', 'json',
+      'node',
+      'test',
+      'view',
+      '--file',
+      file,
+      '--limit',
+      '0',
+      '--format',
+      'json',
     ]);
     const output: string = (console.log as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
     const parsed = JSON.parse(output);
@@ -185,7 +210,15 @@ describe('list command', () => {
   it('filters by --search', async () => {
     const program = buildProgram();
     await program.parseAsync([
-      'node', 'test', 'view', '--file', file, '--search', 'login', '--format', 'json',
+      'node',
+      'test',
+      'view',
+      '--file',
+      file,
+      '--search',
+      'login',
+      '--format',
+      'json',
     ]);
     const output: string = (console.log as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
     const parsed = JSON.parse(output);

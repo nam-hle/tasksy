@@ -1,7 +1,10 @@
 import type { Task } from '../core/task.js';
 import { type TaskConfig, formatId } from '../core/config.js';
 
-export function taskWithFormattedId(task: Task, config: TaskConfig): Omit<Task, 'id'> & { id: string } {
+export function taskWithFormattedId(
+  task: Task,
+  config: TaskConfig,
+): Omit<Task, 'id'> & { id: string } {
   return { ...task, id: formatId(task.id, config) };
 }
 

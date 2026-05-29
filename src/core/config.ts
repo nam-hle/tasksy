@@ -161,7 +161,10 @@ export function parseId(idStr: string, config: TaskConfig): number | null {
   return parseInt(match[1], 10);
 }
 
-export function parseIdList(idsStr: string, config: TaskConfig): { ids: number[]; invalid: string[] } {
+export function parseIdList(
+  idsStr: string,
+  config: TaskConfig,
+): { ids: number[]; invalid: string[] } {
   const ids: number[] = [];
   const invalid: string[] = [];
   for (const part of idsStr.split(',')) {
@@ -290,10 +293,14 @@ export function serializeConfigMinimal(config: TaskConfig): string {
   }
 
   const defaultLines: string[] = [];
-  if (config.defaults.priority !== d.defaults.priority) defaultLines.push(`  priority: ${config.defaults.priority}`);
-  if (config.defaults.type !== d.defaults.type) defaultLines.push(`  type: ${config.defaults.type}`);
-  if (config.defaults.status !== d.defaults.status) defaultLines.push(`  status: ${config.defaults.status}`);
-  if (config.defaults.scope !== d.defaults.scope) defaultLines.push(`  scope: ${config.defaults.scope}`);
+  if (config.defaults.priority !== d.defaults.priority)
+    defaultLines.push(`  priority: ${config.defaults.priority}`);
+  if (config.defaults.type !== d.defaults.type)
+    defaultLines.push(`  type: ${config.defaults.type}`);
+  if (config.defaults.status !== d.defaults.status)
+    defaultLines.push(`  status: ${config.defaults.status}`);
+  if (config.defaults.scope !== d.defaults.scope)
+    defaultLines.push(`  scope: ${config.defaults.scope}`);
   if (defaultLines.length > 0) {
     lines.push('defaults:');
     lines.push(...defaultLines);

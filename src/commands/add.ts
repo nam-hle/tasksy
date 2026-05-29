@@ -5,7 +5,13 @@ import { nextId } from '../core/id.js';
 import { readTasksFile, writeTasksFile, fileExists } from '../shared/file.js';
 import { formatJson } from '../shared/output.js';
 import { validationError } from '../shared/errors.js';
-import { isValidField, parseIdList, formatId, type TaskConfig, DEFAULT_CONFIG } from '../core/config.js';
+import {
+  isValidField,
+  parseIdList,
+  formatId,
+  type TaskConfig,
+  DEFAULT_CONFIG,
+} from '../core/config.js';
 import { taskWithFormattedId } from '../shared/output.js';
 import { valuesHelp } from '../shared/cli-config.js';
 

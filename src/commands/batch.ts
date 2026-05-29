@@ -86,9 +86,7 @@ export function createBatchCommand(): Command {
               }
               if (act.status && isValidField(act.status, config.fields.status)) {
                 if (!isValidTransition(task.status, act.status, config.transitions)) {
-                  throw new Error(
-                    `Cannot transition from "${task.status}" to "${act.status}"`,
-                  );
+                  throw new Error(`Cannot transition from "${task.status}" to "${act.status}"`);
                 }
                 task.status = normalizeField(act.status, config.fields.status);
               }
@@ -110,9 +108,7 @@ export function createBatchCommand(): Command {
               const task = taskFile.tasks.find((t) => t.id === act.id);
               if (!task) throw new Error(`Task ${formatId(act.id, config)} not found`);
               if (!isValidTransition(task.status, 'done', config.transitions)) {
-                throw new Error(
-                  `Cannot transition from "${task.status}" to "done"`,
-                );
+                throw new Error(`Cannot transition from "${task.status}" to "done"`);
               }
               task.status = 'done';
               task.updated = new Date().toISOString().slice(0, 10);
@@ -124,9 +120,7 @@ export function createBatchCommand(): Command {
               const task = taskFile.tasks.find((t) => t.id === act.id);
               if (!task) throw new Error(`Task ${formatId(act.id, config)} not found`);
               if (!isValidTransition(task.status, 'in-progress', config.transitions)) {
-                throw new Error(
-                  `Cannot transition from "${task.status}" to "in-progress"`,
-                );
+                throw new Error(`Cannot transition from "${task.status}" to "in-progress"`);
               }
               task.status = 'in-progress';
               task.updated = new Date().toISOString().slice(0, 10);

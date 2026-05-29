@@ -21,7 +21,9 @@ export function createNextCommand(config: TaskConfig = DEFAULT_CONFIG): Command 
     .option('--type <value>', `Filter by type (${valuesHelp(config.fields.type)})`)
     .option(
       '--scope <value>',
-      config.fields.scope ? `Filter by scope (${valuesHelp(config.fields.scope)})` : 'Filter by scope',
+      config.fields.scope
+        ? `Filter by scope (${valuesHelp(config.fields.scope)})`
+        : 'Filter by scope',
     )
     .option('--file <path>', 'Path to tasks file', 'TASKS.md')
     .option('--format <type>', 'Output format: text/json', 'text')
