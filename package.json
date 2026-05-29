@@ -29,11 +29,11 @@
   "author": "Nam Hoang Le",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nam-hle/md-task.git"
+    "url": "git+https://github.com/nam-hle/tasksy.git"
   },
-  "homepage": "https://github.com/nam-hle/md-task#readme",
+  "homepage": "https://github.com/nam-hle/tasksy#readme",
   "bugs": {
-    "url": "https://github.com/nam-hle/md-task/issues"
+    "url": "https://github.com/nam-hle/tasksy/issues"
   },
   "files": [
     "dist",
