@@ -12,7 +12,6 @@ import {
   type TaskConfig,
   DEFAULT_CONFIG,
 } from '../core/config.js';
-import { taskWithFormattedId } from '../shared/output.js';
 import { valuesHelp } from '../shared/cli-config.js';
 
 export function createAddCommand(config: TaskConfig = DEFAULT_CONFIG): Command {
@@ -99,7 +98,7 @@ export function createAddCommand(config: TaskConfig = DEFAULT_CONFIG): Command {
       if (opts.quiet) {
         console.log(fid);
       } else if (format === 'json') {
-        console.log(formatJson({ task: taskWithFormattedId(task, config) }));
+        console.log(formatJson({ id: fid, created: task.created }));
       } else {
         console.log(`Created task ${fid}: ${task.description}`);
       }

@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import { parseTaskFile, serializeTaskFile } from '../core/parser.js';
 import { readTasksFile, writeTasksFile, fileExists } from '../shared/file.js';
-import { formatJson, taskWithFormattedId } from '../shared/output.js';
+import { formatJson } from '../shared/output.js';
 import { taskNotFound, fileNotFound, validationError } from '../shared/errors.js';
 import {
   isValidField,
@@ -138,7 +138,7 @@ export function createUpdateCommand(config: TaskConfig = DEFAULT_CONFIG): Comman
       if (opts.quiet) {
         console.log(fid);
       } else if (format === 'json') {
-        console.log(formatJson({ task: taskWithFormattedId(task, config) }));
+        console.log(formatJson({ id: fid, status: task.status, updated: task.updated }));
       } else {
         console.log(`Updated task ${fid}: ${task.description}`);
       }

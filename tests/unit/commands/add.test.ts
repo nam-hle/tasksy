@@ -113,7 +113,7 @@ describe('add command', () => {
 
     const output = (console.log as ReturnType<typeof vi.fn>).mock.calls[0]?.[0];
     const parsed = JSON.parse(output);
-    expect(parsed.task.id).toBe('T-1');
-    expect(parsed.task.description).toBe('JSON task');
+    expect(parsed.id).toBe('T-1');
+    expect(parsed.created).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });
