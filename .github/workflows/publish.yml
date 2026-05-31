@@ -3,7 +3,8 @@ name: Publish to npm
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'tasksy-v*.*.*'
+  workflow_dispatch:
 
 permissions:
   contents: read
