@@ -34,4 +34,8 @@ jobs:
 
       - run: pnpm build
 
-      - run: pnpm publish --no-git-checks --access public --provenance
+      # pnpm does not perform npm's OIDC trusted-publishing token exchange,
+      # so publish with the npm CLI (>= 11.5.1) which does.
+      - run: npm install -g npm@latest
+
+      - run: npm publish --access public --provenance
